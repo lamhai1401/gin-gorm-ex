@@ -2,35 +2,32 @@ package usertrpt
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	userbiz "github.com/lamhai1401/gin-gorm-ex/user/business"
-	usermodels "github.com/lamhai1401/gin-gorm-ex/user/model"
 	userstorage "github.com/lamhai1401/gin-gorm-ex/user/storage"
 	"gorm.io/gorm"
 )
 
-func HandleCreateUser(db *gorm.DB, validate *validator.Validate) gin.HandlerFunc {
+func HandleDeleteAnUser(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var dataItem usermodels.User
+		id, err := strconv.Atoi(c.Param("id"))
 
-		if err := c.ShouldBindJSON(&dataItem); err != nil {
+		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		// setup dependencies
 		storage := userstorage.NewMySQLStorage(db)
-		storage.SetValidate(validate)
-		biz := userbiz.NewCreateUserBiz(storage)
+		biz := userbiz.NewDeleteUserBiz(storage)
 
-		err := biz.CreateNewUser(c.Request.Context(), &dataItem)
+		err = biz.DeleteItem(c.Request.Context(), map[string]interface{}{"id": id})
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"data": dataItem})
+		c.JSON(http.StatusOK, gin.H{"data": true})
 	}
 }

@@ -1,7 +1,15 @@
 package usermodels
 
 import (
+	"errors"
+
 	"gorm.io/gorm"
+)
+
+var (
+	ErrTitleCannotBeBlank       = errors.New("title can not be blank")
+	ErrItemNotFound             = errors.New("item not found")
+	ErrCannotUpdateFinishedItem = errors.New("can not update finished item")
 )
 
 type User struct {
@@ -12,3 +20,19 @@ type User struct {
 }
 
 func (User) TableName() string { return "user" }
+
+type DataPaging struct {
+	Page  int   `json:"page" form:"page"`
+	Limit int   `json:"limit" form:"limit"`
+	Total int64 `json:"total" form:"-"`
+}
+
+func (p *DataPaging) Process() {
+	if p.Page <= 0 {
+		p.Page = 1
+	}
+
+	if p.Limit <= 0 {
+		p.Limit = 10
+	}
+}
