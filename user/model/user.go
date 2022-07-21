@@ -6,6 +6,10 @@ import (
 	"gorm.io/gorm"
 )
 
+const (
+	IdxEmail = "idx_email"
+)
+
 var (
 	ErrTitleCannotBeBlank       = errors.New("title can not be blank")
 	ErrItemNotFound             = errors.New("item not found")
@@ -16,7 +20,7 @@ type User struct {
 	gorm.Model
 	ID    string `json:"id" gorm:"column:id;" validate:"required"`
 	Name  string `json:"name" gorm:"column:name;" validate:"required"`
-	Email string `json:"email" gorm:"column:email;" validate:"required,email"`
+	Email string `json:"email" gorm:"column:email,uniqueIndex:idx_email;" validate:"required,email"`
 }
 
 func (User) TableName() string { return "user" }

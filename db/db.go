@@ -29,9 +29,7 @@ func CloseDB() error {
 func connectDB(dsn string) *gorm.DB {
 	var err error
 	fmt.Println("dsn : ", dsn)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		PrepareStmt: true,
-	})
+	db, err := gorm.Open(mysql.Open(dsn))
 	if err != nil {
 		fmt.Printf("Error connecting to database : error=%v\n", err)
 		return nil
