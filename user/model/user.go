@@ -2,12 +2,13 @@ package usermodels
 
 import (
 	"errors"
+	"time"
 
 	"gorm.io/gorm"
 )
 
 const (
-	IdxEmail = "idx_email"
+	Idx_Email = "idx_email"
 )
 
 var (
@@ -17,10 +18,12 @@ var (
 )
 
 type User struct {
-	gorm.Model
-	ID    string `json:"id" gorm:"column:id;" validate:"required"`
-	Name  string `json:"name" gorm:"column:name;" validate:"required"`
-	Email string `json:"email" gorm:"column:email,uniqueIndex:idx_email;" validate:"required,email"`
+	ID        string `json:"id" gorm:"default:id,column:id,primarykey;" mapstructure:"id"`
+	Name      string `json:"name" gorm:"column:name;" validate:"required" mapstructure:"name"`
+	Email     string `gorm:"column:email,size:255;index:idx_email,unique"  validate:"required,email" mapstructure:"email"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt
 }
 
 func (User) TableName() string { return "user" }

@@ -5,9 +5,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/lamhai1401/gin-gorm-ex/caching"
 	"github.com/lamhai1401/gin-gorm-ex/db"
 	usermodels "github.com/lamhai1401/gin-gorm-ex/user/model"
 	usertrpt "github.com/lamhai1401/gin-gorm-ex/user/transport"
+	"github.com/lamhai1401/gin-gorm-ex/utils"
 )
 
 const DB_USERNAME = "root"
@@ -24,8 +26,14 @@ func main() {
 func setupRouter() *gin.Engine {
 	dsn := DB_USERNAME + ":" + DB_PASSWORD + "@tcp" + "(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME + "?" + "parseTime=true&loc=Local"
 
+	// init cache
+	caching.InitLocalCaching(100)
+
+	// init utils
+	utils.InitSnowflakeGenerator(1)
+
 	// init db
-	database := db.InitDB(dsn)
+	database := db.InitDB(dsn, dsn, dsn)
 	defer db.CloseDB()
 
 	// migrate table

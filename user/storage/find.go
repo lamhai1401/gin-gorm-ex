@@ -4,6 +4,7 @@ import (
 	"context"
 
 	usermodels "github.com/lamhai1401/gin-gorm-ex/user/model"
+	"github.com/mitchellh/mapstructure"
 	"gorm.io/gorm"
 	"gorm.io/hints"
 )
@@ -13,16 +14,17 @@ func (s *userStorage) FindUser(
 	condition map[string]interface{},
 ) (*usermodels.User, error) {
 	var userData usermodels.User
+	var userCondition usermodels.User
 
-	// if err := s.db.Where(condition).First(&itemData).Error; err != nil {
-	// 	if err == gorm.ErrRecordNotFound { // data not found
-	// 		return nil, usermodels.ErrItemNotFound
-	// 	}
+	err := mapstructure.Decode(condition, &userCondition)
+	if err != nil {
+		return nil, err
+	}
 
-	// 	return nil, err // other errors
-	// }
-
-	err := s.db.Clauses(hints.UseIndex(usermodels.IdxEmail)).Find(&userData, condition).Error
+	err = s.db.
+		Clauses(hints.UseIndex(usermodels.Idx_Email)).
+		Find(&userData, userCondition).
+		Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound { // data not found
 			return nil, usermodels.ErrItemNotFound

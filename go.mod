@@ -3,8 +3,11 @@ module github.com/lamhai1401/gin-gorm-ex
 go 1.18
 
 require (
+	github.com/bluele/gcache v0.0.2
+	github.com/bwmarrin/snowflake v0.3.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-playground/validator/v10 v10.11.0
+	github.com/mitchellh/mapstructure v1.5.0
 	gorm.io/driver/mysql v1.3.5
 	gorm.io/gorm v1.23.8
 	gorm.io/hints v1.1.0

@@ -15,12 +15,15 @@ func (s *userStorage) ListUsers(
 
 	var result []usermodels.User
 
-	if err := s.db.Table(usermodels.User{}.TableName()).
+	err := s.db.
+		Table(usermodels.User{}.TableName()).
 		Where(condition).
 		Count(&paging.Total).
 		Offset(offset).
 		Order("id desc").
-		Find(&result).Error; err != nil {
+		Find(&result).Error
+
+	if err != nil {
 		return nil, err
 	}
 
