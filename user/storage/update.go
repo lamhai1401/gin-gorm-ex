@@ -11,9 +11,11 @@ func (s *userStorage) UpdateUser(
 	condition map[string]interface{},
 	dataUpdate *usermodels.User,
 ) error {
-	if err := s.db.Where(condition).Updates(dataUpdate).Error; err != nil {
+	tx := s.db.Begin()
+	err := tx.Where(condition).Updates(dataUpdate).Error
+	if err != nil {
+		tx.Rollback()
 		return err
 	}
-
-	return nil
+	return tx.Commit().Error
 }

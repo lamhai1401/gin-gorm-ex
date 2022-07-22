@@ -10,12 +10,11 @@ func (s *userStorage) DeleteUser(
 	ctx context.Context,
 	condition map[string]interface{},
 ) error {
-
-	if err := s.db.
-		Table(usermodels.User{}.TableName()).
-		Where(condition).Delete(nil).Error; err != nil {
+	tx := s.db.Begin()
+	err := tx.Table(usermodels.User{}.TableName()).Where(condition).Delete(nil).Error
+	if err != nil {
+		tx.Rollback()
 		return err
 	}
-
-	return nil
+	return tx.Commit().Error
 }

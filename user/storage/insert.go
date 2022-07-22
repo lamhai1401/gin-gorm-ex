@@ -7,9 +7,13 @@ import (
 )
 
 func (s *userStorage) CreateUser(ctx context.Context, data *usermodels.User) error {
-	err := s.db.Create(data).Error
+	tx := s.db.Begin()
+
+	err := tx.Create(data).Error
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
-	return nil
+
+	return tx.Commit().Error
 }
