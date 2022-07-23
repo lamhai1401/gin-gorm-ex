@@ -52,6 +52,7 @@ func setupRouter() *gin.Engine {
 	user := v1.Group("/users")
 	{
 		session := database.NewSession()
+		user.POST("/login", usertrpt.HandleLoginUser(session))       // login user return token
 		user.POST("", usertrpt.HandleCreateUser(session, validate))  // create user
 		user.GET("", usertrpt.HandleListUser(session))               // list
 		user.GET("/:email", usertrpt.HandleFindAnUser(session))      // get an item by ID
