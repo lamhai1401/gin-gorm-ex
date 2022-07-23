@@ -4,7 +4,7 @@ import (
 	"context"
 
 	usermodels "github.com/lamhai1401/gin-gorm-ex/user/model"
-	"github.com/mitchellh/mapstructure"
+	"github.com/lamhai1401/gin-gorm-ex/utils"
 	"gorm.io/gorm"
 	"gorm.io/hints"
 )
@@ -16,7 +16,7 @@ func (s *userStorage) FindUser(
 	var userData usermodels.User
 	var userCondition usermodels.User
 
-	err := mapstructure.Decode(condition, &userCondition)
+	err := utils.Decode(condition, &userCondition)
 	if err != nil {
 		return nil, err
 	}

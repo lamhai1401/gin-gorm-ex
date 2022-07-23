@@ -22,7 +22,7 @@ func HandleDeleteAnUser(db *gorm.DB) gin.HandlerFunc {
 		storage := userstorage.NewMySQLStorage(db)
 		biz := userbiz.NewDeleteUserBiz(storage)
 
-		err = biz.DeleteItem(c.Request.Context(), map[string]interface{}{"id": id})
+		err = biz.DeleteUser(c.Request.Context(), map[string]interface{}{"id": id})
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

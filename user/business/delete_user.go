@@ -3,6 +3,7 @@ package userbiz
 import (
 	"context"
 
+	"github.com/lamhai1401/gin-gorm-ex/caching"
 	usermodels "github.com/lamhai1401/gin-gorm-ex/user/model"
 )
 
@@ -26,13 +27,13 @@ func NewDeleteUserBiz(store DeleteUserStorage) *deleteBiz {
 	return &deleteBiz{store: store}
 }
 
-func (biz *deleteBiz) DeleteItem(
+func (biz *deleteBiz) DeleteUser(
 	ctx context.Context,
 	condition map[string]interface{},
 ) error {
 
 	// step 1: Find item by conditions
-	_, err := biz.store.FindUser(ctx, condition)
+	user, err := biz.store.FindUser(ctx, condition)
 	if err != nil {
 		return err
 	}
@@ -42,5 +43,7 @@ func (biz *deleteBiz) DeleteItem(
 		return err
 	}
 
+	// Step 3: remove local cache
+	caching.RemoveLocalCache(user.ID)
 	return nil
 }
