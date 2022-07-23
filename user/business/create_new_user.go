@@ -37,6 +37,14 @@ func (biz *createUserBiz) CreateNewUser(ctx context.Context, data *usermodels.Us
 	// add snowflake ID
 	data.ID = utils.GetSnowflakeID()
 
+	// hash password
+	hashedPassword, err := utils.HashPassword(data.Password)
+	if err != nil {
+		return err
+	}
+
+	data.Password = hashedPassword
+
 	// add data
 	err = biz.store.CreateUser(ctx, data)
 	if err != nil {
