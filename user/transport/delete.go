@@ -12,7 +12,7 @@ import (
 
 func HandleDeleteAnUser(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
+		email, err := strconv.Atoi(c.Param("email"))
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -22,7 +22,7 @@ func HandleDeleteAnUser(db *gorm.DB) gin.HandlerFunc {
 		storage := userstorage.NewMySQLStorage(db)
 		biz := userbiz.NewDeleteUserBiz(storage)
 
-		err = biz.DeleteUser(c.Request.Context(), map[string]interface{}{"id": id})
+		err = biz.DeleteUser(c.Request.Context(), map[string]interface{}{"email": email})
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

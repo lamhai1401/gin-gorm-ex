@@ -52,11 +52,11 @@ func setupRouter() *gin.Engine {
 	user := v1.Group("/users")
 	{
 		session := database.NewSession()
-		user.POST("", usertrpt.HandleCreateUser(session, validate)) // create user
-		user.GET("", usertrpt.HandleListUser(session))              // list
-		user.GET("/:id", usertrpt.HandleFindAnUser(session))        // get an item by ID
-		user.PUT("/:id", usertrpt.HandleUpdateAnUser(session))      // edit an item by ID
-		user.DELETE("/:id", usertrpt.HandleDeleteAnUser(session))   // delete an item by ID
+		user.POST("", usertrpt.HandleCreateUser(session, validate))  // create user
+		user.GET("", usertrpt.HandleListUser(session))               // list
+		user.GET("/:email", usertrpt.HandleFindAnUser(session))      // get an item by ID
+		user.PUT("/:email", usertrpt.HandleUpdateAnUser(session))    // edit an item by ID
+		user.DELETE("/:email", usertrpt.HandleDeleteAnUser(session)) // delete an item by ID
 	}
 	return router
 }

@@ -13,3 +13,10 @@ go get gorm.io/driver/mysql
 sudo docker exec -it fc3ccaf40db2 /bin/bash
 mysql -u root -h localhost -P 3306 hackernews -p
 DROP TABLE IF EXISTS user;
+
+## Impl
+
+Add etcd to handle write access
+Add grahQL
+Add grpcGateway
+Add auth

@@ -27,9 +27,9 @@ func (biz *findBiz) FindUser(ctx context.Context, condition map[string]interface
 	// check cache here
 	var err error
 	var itemData *usermodels.User
-	id, ok := condition["id"].(string)
+	email, ok := condition["email"].(string)
 	if ok {
-		data, err := caching.GetLocalCache(id)
+		data, err := caching.GetLocalCache(email)
 		if err == nil {
 			// parsing data
 			err = utils.Decode(data, &itemData)
@@ -46,6 +46,6 @@ func (biz *findBiz) FindUser(ctx context.Context, condition map[string]interface
 		return nil, err
 	}
 
-	caching.AddLocalCache(itemData.ID, itemData)
+	caching.AddLocalCache(itemData.Email, itemData)
 	return itemData, nil
 }

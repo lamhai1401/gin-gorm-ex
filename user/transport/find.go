@@ -11,12 +11,12 @@ import (
 
 func HandleFindAnUser(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id := c.Param("id")
+		email := c.Param("email")
 
 		storage := userstorage.NewMySQLStorage(db)
 		biz := userbiz.NewFindUserBiz(storage)
 
-		data, err := biz.FindUser(c.Request.Context(), map[string]interface{}{"id": id})
+		data, err := biz.FindUser(c.Request.Context(), map[string]interface{}{"email": email})
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

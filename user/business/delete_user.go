@@ -44,6 +44,6 @@ func (biz *deleteBiz) DeleteUser(
 	}
 
 	// Step 3: remove local cache
-	caching.RemoveLocalCache(user.ID)
+	caching.RemoveLocalCache(user.Email)
 	return nil
 }

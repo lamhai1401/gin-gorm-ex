@@ -13,7 +13,7 @@ import (
 
 func HandleUpdateAnUser(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
+		email, err := strconv.Atoi(c.Param("email"))
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -30,7 +30,7 @@ func HandleUpdateAnUser(db *gorm.DB) gin.HandlerFunc {
 		storage := userstorage.NewMySQLStorage(db)
 		biz := userbiz.NewUpdateUserBiz(storage)
 
-		if err := biz.UpdateUser(c.Request.Context(), map[string]interface{}{"id": id}, &dataItem); err != nil {
+		if err := biz.UpdateUser(c.Request.Context(), map[string]interface{}{"email": email}, &dataItem); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}

@@ -53,6 +53,6 @@ func (biz *updateBiz) UpdateUser(
 	}
 
 	// Step 4: remove caching
-	caching.RemoveLocalCache(user.ID)
+	caching.RemoveLocalCache(user.Email)
 	return nil
 }

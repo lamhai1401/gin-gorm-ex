@@ -21,6 +21,8 @@ type User struct {
 	ID        string `json:"id" gorm:"default:id,column:id,primarykey;" mapstructure:"id"`
 	Name      string `json:"name" gorm:"column:name;" validate:"required" mapstructure:"name"`
 	Email     string `gorm:"column:email,size:255;index:idx_email,unique"  validate:"required,email" mapstructure:"email"`
+	Password  string `json:"password" gorm:"column:password;" validate:"required" mapstructure:"password"`
+	Token     string `json:"token" gorm:"column:token;" validate:"jwt" mapstructure:"token"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt
